@@ -1,0 +1,3265 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>Планировщик 2026 | 12 недель до результата</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-hover: rgba(255, 255, 255, 0.08);
+            
+            --red: #E63946;
+            --red-bright: #FF2D47;
+            --red-dim: rgba(230, 57, 70, 0.15);
+            --gold: #FFD700;
+            --gold-dim: rgba(255, 215, 0, 0.15);
+            --blue: #4361EE;
+            --blue-bright: #4CC9F0;
+            --blue-dim: rgba(67, 97, 238, 0.15);
+            --green: #22C55E;
+            --green-dim: rgba(34, 197, 94, 0.15);
+            --white: #FFFFFF;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.75);
+            --text-muted: rgba(255, 255, 255, 0.45);
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            --glow-red: 0 0 40px rgba(230, 57, 70, 0.4);
+            --glow-gold: 0 0 40px rgba(255, 215, 0, 0.3);
+            --glow-blue: 0 0 40px rgba(67, 97, 238, 0.4);
+            --glow-green: 0 0 40px rgba(34, 197, 94, 0.3);
+            
+            --gradient-festive: linear-gradient(135deg, var(--red) 0%, var(--gold) 50%, var(--blue) 100%);
+            --gradient-red: linear-gradient(135deg, #E63946 0%, #FF6B6B 100%);
+            --gradient-card: linear-gradient(145deg, rgba(230, 57, 70, 0.08) 0%, rgba(67, 97, 238, 0.08) 100%);
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            scroll-behavior: smooth;
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: pan-x pan-y;
+            overscroll-behavior: none;
+        }
+
+        /* Allow text selection only in inputs */
+        input, textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+            touch-action: manipulation;
+        }
+
+        /* Prevent zoom on double tap */
+        button, a, .goal-card-header, .review-option, .checkin-checkbox, 
+        .energy-emoji, .journal-filter, .modal-type, .cabinet-nav-item {
+            touch-action: manipulation;
+        }
+
+        /* Prevent pinch zoom */
+        * {
+            touch-action: pan-x pan-y;
+        }
+
+        /* ===== BACKGROUNDS ===== */
+        .bg-effects {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(ellipse at 20% 0%, rgba(230, 57, 70, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(67, 97, 238, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+                var(--bg-primary);
+        }
+
+        .sparkles {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(2px 2px at 10% 20%, rgba(255, 215, 0, 0.6), transparent),
+                radial-gradient(2px 2px at 30% 60%, rgba(255, 255, 255, 0.4), transparent),
+                radial-gradient(1px 1px at 50% 30%, rgba(230, 57, 70, 0.5), transparent),
+                radial-gradient(2px 2px at 70% 80%, rgba(67, 97, 238, 0.4), transparent),
+                radial-gradient(1px 1px at 90% 40%, rgba(255, 215, 0, 0.4), transparent);
+            background-size: 250px 250px;
+            animation: sparkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
+        }
+
+        /* ===== APP MODES ===== */
+        .app { position: relative; z-index: 1; min-height: 100vh; min-height: 100dvh; }
+        
+        #onboardingApp { display: block; }
+        #cabinetApp { display: none; }
+        
+        body.cabinet-mode #onboardingApp { display: none; }
+        body.cabinet-mode #cabinetApp { display: block; }
+
+        /* ===== TYPOGRAPHY ===== */
+        .title-hero {
+            font-family: 'Bebas Neue', Impact, sans-serif;
+            font-size: clamp(38px, 11vw, 64px);
+            font-weight: 400;
+            line-height: 0.95;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .title-hero .highlight-red { color: var(--red-bright); }
+        .title-hero .highlight-gold { color: var(--gold); }
+
+        .title-section {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(28px, 8vw, 42px);
+            line-height: 1;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .subtitle .accent { color: var(--gold); font-weight: 600; }
+        .subtitle .accent-red { color: var(--red-bright); font-weight: 600; }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 28px;
+            border-radius: var(--radius-md);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: var(--gradient-red);
+            color: var(--white);
+            box-shadow: var(--glow-red);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(230, 57, 70, 0.5);
+        }
+
+        .btn-pulse { animation: pulse 2s ease-in-out infinite; }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(230, 57, 70, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(230, 57, 70, 0.6), 0 0 60px rgba(230, 57, 70, 0.3); }
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, #FFA500 100%);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-light);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+        }
+
+        /* ===== PROGRESS BAR ===== */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 14px 16px;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.98), transparent);
+            backdrop-filter: blur(20px);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-back {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px;
+            margin: -8px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+        }
+
+        .progress-back:hover { color: var(--white); }
+        .progress-back:disabled { opacity: 0; pointer-events: none; }
+
+        .progress-step {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .progress-step .current { color: var(--gold); font-weight: 700; }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--border-subtle);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-festive);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* ===== SCREENS ===== */
+        .screens-container {
+            padding: 80px 16px 120px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: 24px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            background: linear-gradient(to top, rgba(10, 10, 10, 1), transparent);
+            z-index: 100;
+        }
+
+        .bottom-nav .btn {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        /* ===== INTRO CHECKLIST ===== */
+        .intro-checklist { display: flex; flex-direction: column; gap: 12px; }
+
+        .intro-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+        }
+
+        .intro-item .check-icon {
+            width: 26px;
+            height: 26px;
+            background: var(--gradient-festive);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .intro-item span { font-size: 15px; font-weight: 500; }
+
+        /* ===== ARTICLE ===== */
+        .article {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .article-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: var(--gold);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .article p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .article p:last-child { margin-bottom: 0; }
+        .article strong { color: var(--white); }
+
+        .article-highlight {
+            background: var(--red-dim);
+            border-left: 4px solid var(--red);
+            padding: 14px 18px;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 16px 0;
+        }
+
+        .principles-list { list-style: none; margin: 14px 0; }
+
+        .principles-list li {
+            position: relative;
+            padding: 10px 0 10px 32px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .principles-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background: var(--gradient-festive);
+            border-radius: 50%;
+        }
+
+        .principles-list li strong { color: var(--white); }
+
+        /* ===== SLIDERS ===== */
+        .wheel-section { display: flex; flex-direction: column; gap: 20px; }
+
+        .wheel-canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            aspect-ratio: 1;
+        }
+
+        #wheelCanvas { width: 100%; height: 100%; }
+
+        .sliders-container { display: flex; flex-direction: column; gap: 16px; }
+
+        .slider-row { display: flex; flex-direction: column; gap: 8px; }
+
+        .slider-header { display: flex; justify-content: space-between; align-items: center; }
+
+        .slider-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .slider-label .emoji { font-size: 18px; }
+
+        .slider-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            color: var(--gold);
+        }
+
+        .slider-track {
+            position: relative;
+            height: 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .slider-fill {
+            position: absolute;
+            left: 0;
+            top: -1px;
+            height: calc(100% + 2px);
+            background: var(--gradient-festive);
+            border-radius: 6px;
+            transition: width 0.1s ease;
+        }
+
+        .slider-thumb {
+            position: absolute;
+            top: 50%;
+            width: 28px;
+            height: 28px;
+            background: var(--white);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 3px var(--gold);
+            z-index: 2;
+        }
+
+        .slider-thumb:active { cursor: grabbing; }
+
+        .wheel-insight {
+            padding: 16px 18px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--gold);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .wheel-insight strong { color: var(--gold); }
+
+        /* ===== FORMS ===== */
+        .form-group { display: flex; flex-direction: column; gap: 10px; }
+
+        .form-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label .emoji { font-size: 22px; }
+
+        .form-hint { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+        textarea, input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 16px; /* Prevents iOS zoom on focus */
+            line-height: 1.6;
+            resize: none;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px var(--gold-dim);
+        }
+
+        textarea::placeholder, input::placeholder { color: var(--text-muted); }
+
+        /* ===== VISION ===== */
+        .vision-card {
+            text-align: center;
+            padding: 32px 20px;
+            background: var(--gradient-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+        }
+
+        .vision-emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .vision-card p { font-size: 16px; color: var(--text-secondary); line-height: 1.8; }
+        .vision-card strong { color: var(--gold); }
+
+        /* ===== GOAL CARDS ===== */
+        .goals-grid { display: flex; flex-direction: column; gap: 12px; }
+
+        .goal-card-wrapper {
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .goal-card-wrapper.selected {
+            border-color: var(--red);
+            background: var(--red-dim);
+        }
+
+        .goal-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            cursor: pointer;
+        }
+
+        .goal-card-header .emoji { font-size: 28px; }
+
+        .goal-card-content { flex: 1; }
+
+        .goal-card-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .goal-card-hint { font-size: 12px; color: var(--text-muted); }
+
+        .goal-card-toggle {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-subtle);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .goal-card-wrapper.selected .goal-card-toggle {
+            background: var(--red);
+            border-color: var(--red);
+            transform: rotate(45deg);
+        }
+
+        .toggle-icon { font-size: 20px; color: var(--text-secondary); }
+        .goal-card-wrapper.selected .toggle-icon { color: var(--white); }
+
+        .goal-card-expand {
+            display: none;
+            padding: 0 18px 18px;
+            animation: expandIn 0.3s ease;
+        }
+
+        .goal-card-wrapper.selected .goal-card-expand { display: block; }
+
+        @keyframes expandIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .goal-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 16px;
+            margin-bottom: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .goal-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .smart-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .smart-tag {
+            padding: 5px 10px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .smart-tag.valid { background: var(--gold-dim); color: var(--gold); }
+
+        .goal-counter {
+            text-align: center;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+        }
+
+        .goal-counter span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: var(--gold);
+        }
+
+        /* ===== TACTICS ===== */
+        .tactic-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .tactic-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .tactic-header .emoji { font-size: 24px; }
+
+        .tactic-header h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+        }
+
+        .tactics-list { display: flex; flex-direction: column; gap: 10px; }
+
+        .tactic-row { display: flex; flex-direction: column; gap: 8px; }
+
+        .tactic-row input { flex: 1; }
+
+        .tactic-select {
+            padding: 12px 14px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 16px;
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .add-tactic-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: transparent;
+            border: 2px dashed var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .add-tactic-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ===== QUOTE BLOCK ===== */
+        .quote-block {
+            padding: 20px;
+            background: var(--bg-card);
+            border-left: 4px solid var(--red);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .quote-block strong {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .quote-block p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ===== REVIEW OPTIONS ===== */
+        .review-options { display: flex; flex-direction: column; gap: 10px; }
+
+        .review-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        .review-option.selected {
+            border-color: var(--blue);
+            background: var(--blue-dim);
+        }
+
+        .review-option input { display: none; }
+
+        .review-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid var(--border-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-option.selected .review-radio {
+            border-color: var(--blue);
+            background: var(--blue);
+        }
+
+        .review-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--white);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .review-option.selected .review-radio::after { opacity: 1; }
+
+        .review-text { font-size: 14px; font-weight: 500; }
+
+        /* ===== SCORECARD DEMO ===== */
+        .scorecard-demo {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+        }
+
+        .scorecard-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            margin-bottom: 14px;
+        }
+
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .score-item {
+            text-align: center;
+            padding: 14px 10px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .score-item .percent {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            display: block;
+        }
+
+        .score-item .label { font-size: 10px; color: var(--text-muted); }
+
+        .score-item.gold .percent { color: var(--gold); }
+        .score-item.green .percent { color: var(--green); }
+        .score-item.yellow .percent { color: #EAB308; }
+        .score-item.red .percent { color: var(--red); }
+
+        .weekly-checklist {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+        }
+
+        .weekly-checklist h4 {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .check-box {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-light);
+            border-radius: 4px;
+        }
+
+        /* ===== FINAL SCREEN ===== */
+        .final-header { text-align: center; margin-bottom: 8px; }
+
+        .final-emoji {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 12px;
+            animation: celebrate 1s ease-in-out infinite;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .final-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(28px, 7vw, 40px);
+            margin-bottom: 6px;
+        }
+
+        .final-subtitle { font-size: 15px; color: var(--text-secondary); }
+
+        .summary-section { display: flex; flex-direction: column; gap: 14px; }
+
+        .summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+        }
+
+        .summary-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .summary-icon { font-size: 22px; }
+
+        .summary-card-header h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            color: var(--gold);
+        }
+
+        .summary-goals { display: flex; flex-direction: column; gap: 10px; }
+
+        .summary-goal-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--red);
+        }
+
+        .summary-goal-item .emoji { font-size: 18px; }
+        .summary-goal-item .text { font-size: 14px; font-weight: 500; }
+
+        .summary-empty {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+            padding: 14px;
+        }
+
+        .summary-tactics { display: flex; flex-direction: column; gap: 14px; }
+
+        .summary-tactics-group { display: flex; flex-direction: column; gap: 6px; }
+
+        .summary-tactics-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .summary-tactic-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+        }
+
+        .summary-tactic-item .check { color: var(--gold); }
+
+        .summary-tactic-item .freq {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .summary-wheel { display: flex; flex-direction: column; gap: 8px; }
+
+        .summary-wheel-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .summary-wheel-item .emoji { font-size: 16px; width: 24px; }
+        .summary-wheel-item .label { flex: 1; font-size: 13px; }
+
+        .summary-wheel-item .bar {
+            width: 50px;
+            height: 5px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .summary-wheel-item .bar-fill { height: 100%; border-radius: 3px; }
+
+        .summary-wheel-item .value {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            min-width: 35px;
+            text-align: right;
+        }
+
+        .summary-wheel-item .value.low { color: var(--red); }
+        .summary-wheel-item .value.medium { color: var(--gold); }
+        .summary-wheel-item .value.high { color: var(--green); }
+
+        .summary-review { text-align: center; padding: 14px; }
+
+        .summary-review-day {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: var(--blue-bright);
+        }
+
+        .summary-review-hint { font-size: 13px; color: var(--text-secondary); }
+
+        .final-stats-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 18px;
+            background: var(--gradient-card);
+            border-radius: var(--radius-lg);
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .stat-divider { width: 1px; height: 36px; background: var(--border-subtle); }
+
+        .motivation-block {
+            position: relative;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, var(--red-dim), var(--gold-dim));
+            border-radius: var(--radius-xl);
+            text-align: center;
+        }
+
+        .quote-mark {
+            font-family: Georgia, serif;
+            font-size: 60px;
+            color: var(--gold);
+            opacity: 0.3;
+            position: absolute;
+            top: -5px;
+            left: 15px;
+        }
+
+        .motivation-text {
+            font-size: 16px;
+            line-height: 1.8;
+            position: relative;
+        }
+
+        .motivation-text strong {
+            color: var(--gold);
+            display: block;
+            margin-top: 10px;
+            font-size: 17px;
+        }
+
+        .enter-cabinet-btn {
+            margin-top: 20px;
+        }
+
+        .enter-cabinet-btn .btn {
+            width: 100%;
+        }
+
+        /* ========================================
+           PERSONAL CABINET STYLES
+           ======================================== */
+
+        .cabinet {
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding-bottom: 80px;
+        }
+
+        /* Cabinet Header */
+        .cabinet-header {
+            padding: 20px 16px;
+            padding-top: calc(20px + env(safe-area-inset-top, 0px));
+            background: linear-gradient(to bottom, var(--bg-primary), transparent);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .cabinet-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .cabinet-week-badge {
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .week-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--gradient-festive);
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* Cabinet Navigation */
+        .cabinet-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-subtle);
+            padding: 8px 16px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+            z-index: 100;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .cabinet-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            min-width: 60px;
+        }
+
+        .cabinet-nav-item .nav-icon { font-size: 22px; }
+
+        .cabinet-nav-item.active {
+            color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .cabinet-nav-item.pulse {
+            animation: navPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes navPulse {
+            0%, 100% { box-shadow: none; }
+            50% { box-shadow: 0 0 20px var(--gold-dim); }
+        }
+
+        /* Cabinet Content */
+        .cabinet-content {
+            padding: 0 16px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cabinet-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .cabinet-section.active { display: block; }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard-hero {
+            text-align: center;
+            padding: 24px 20px;
+            background: var(--gradient-card);
+            border-radius: var(--radius-xl);
+            margin-bottom: 20px;
+        }
+
+        .dashboard-week-progress {
+            margin-bottom: 16px;
+        }
+
+        .week-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .week-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .dashboard-progress-bar {
+            height: 10px;
+            background: var(--bg-secondary);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .dashboard-progress-fill {
+            height: 100%;
+            background: var(--gradient-festive);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .dashboard-progress-text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Streak */
+        .streak-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+        }
+
+        .streak-fire { font-size: 32px; }
+
+        .streak-info { text-align: left; }
+
+        .streak-count {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: var(--gold);
+        }
+
+        .streak-label { font-size: 12px; color: var(--text-secondary); }
+
+        /* Dashboard Stats */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .dashboard-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .dashboard-stat-value.gold { color: var(--gold); }
+        .dashboard-stat-value.green { color: var(--green); }
+        .dashboard-stat-value.blue { color: var(--blue-bright); }
+        .dashboard-stat-value.red { color: var(--red); }
+
+        .dashboard-stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .dashboard-stat-change {
+            font-size: 11px;
+            margin-top: 6px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .dashboard-stat-change.up { background: var(--green-dim); color: var(--green); }
+        .dashboard-stat-change.down { background: var(--red-dim); color: var(--red); }
+
+        /* Goals List */
+        .dashboard-goals { margin-bottom: 20px; }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-goal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-goal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-goal-header .emoji { font-size: 22px; }
+
+        .dashboard-goal-header .title {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .dashboard-goal-header .percent {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: var(--gold);
+        }
+
+        .dashboard-goal-progress {
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .dashboard-goal-progress-fill {
+            height: 100%;
+            background: var(--gold);
+            border-radius: 3px;
+        }
+
+        /* CTA Card */
+        .dashboard-cta {
+            background: var(--gradient-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .dashboard-cta-emoji { font-size: 40px; margin-bottom: 12px; }
+
+        .dashboard-cta-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-cta-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        /* ===== CHECKIN ===== */
+        .checkin-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .checkin-week {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--gold);
+        }
+
+        .checkin-date {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .checkin-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .checkin-section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkin-tactics { display: flex; flex-direction: column; gap: 10px; }
+
+        .checkin-tactic-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .checkin-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .checkin-checkbox.checked {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .checkin-checkbox.partial {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .checkin-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            opacity: 0;
+        }
+
+        .checkin-checkbox.checked::after,
+        .checkin-checkbox.partial::after { opacity: 1; }
+
+        .checkin-checkbox.partial::after { content: '~'; }
+
+        .checkin-tactic-text { flex: 1; font-size: 14px; }
+
+        .checkin-tactic-freq {
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .checkin-score-result {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            margin-top: 16px;
+        }
+
+        .checkin-score-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+        }
+
+        .checkin-score-value.great { color: var(--gold); }
+        .checkin-score-value.good { color: var(--green); }
+        .checkin-score-value.ok { color: #EAB308; }
+        .checkin-score-value.low { color: var(--red); }
+
+        .checkin-score-label { font-size: 14px; color: var(--text-secondary); }
+
+        /* Energy slider */
+        .energy-slider-container { margin: 16px 0; }
+
+        .energy-emojis {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .energy-emoji {
+            font-size: 24px;
+            opacity: 0.4;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .energy-emoji.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* Win of the week */
+        .win-input {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold-dim);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .win-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .win-input::placeholder { color: var(--text-muted); }
+
+        .checkin-submit {
+            margin-top: 20px;
+        }
+
+        .checkin-submit .btn { width: 100%; }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-container {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .roadmap-line {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--border-subtle);
+            border-radius: 2px;
+        }
+
+        .roadmap-line-fill {
+            width: 100%;
+            background: var(--gradient-festive);
+            border-radius: 2px;
+            transition: height 0.5s ease;
+        }
+
+        .roadmap-weeks { position: relative; }
+
+        .roadmap-week {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 12px 0;
+            position: relative;
+        }
+
+        .roadmap-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-week.completed .roadmap-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: white;
+        }
+
+        .roadmap-week.current .roadmap-dot {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: #000;
+            box-shadow: var(--glow-gold);
+            animation: currentPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes currentPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); }
+        }
+
+        .roadmap-week.future .roadmap-dot {
+            background: var(--bg-secondary);
+            border-color: var(--border-subtle);
+            color: var(--text-muted);
+        }
+
+        .roadmap-content {
+            flex: 1;
+            padding: 8px 0;
+        }
+
+        .roadmap-week-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .roadmap-week-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+        }
+
+        .roadmap-week.current .roadmap-week-title { color: var(--gold); }
+        .roadmap-week.future .roadmap-week-title { color: var(--text-muted); }
+
+        .roadmap-week-score {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            background: var(--bg-card);
+        }
+
+        .roadmap-week.completed .roadmap-week-score { background: var(--green-dim); color: var(--green); }
+
+        .roadmap-week-win {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .roadmap-finish {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 0;
+        }
+
+        .roadmap-finish-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-festive);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        .roadmap-finish.reached .roadmap-finish-icon {
+            opacity: 1;
+            box-shadow: var(--glow-gold);
+        }
+
+        .roadmap-finish-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .roadmap-finish.reached .roadmap-finish-text { color: var(--gold); }
+
+        /* ===== JOURNAL ===== */
+        .journal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .journal-add-btn {
+            padding: 10px 16px;
+            background: var(--gradient-red);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .journal-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .journal-filter {
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .journal-filter.active {
+            background: var(--gold-dim);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .journal-entries { display: flex; flex-direction: column; gap: 12px; }
+
+        .journal-entry {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+        }
+
+        .journal-entry-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .journal-entry-type {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .journal-entry-type.win { background: var(--gold-dim); }
+        .journal-entry-type.lesson { background: var(--blue-dim); }
+        .journal-entry-type.idea { background: var(--green-dim); }
+        .journal-entry-type.struggle { background: var(--red-dim); }
+
+        .journal-entry-meta { flex: 1; }
+
+        .journal-entry-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .journal-entry-week {
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-secondary);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .journal-entry-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .journal-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .journal-empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+        /* Journal Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 24px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-types {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-type {
+            padding: 12px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-type.selected {
+            border-color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .modal-type-icon { font-size: 24px; margin-bottom: 4px; }
+        .modal-type-label { font-size: 11px; color: var(--text-secondary); }
+
+        .modal-textarea {
+            width: 100%;
+            height: 120px;
+            padding: 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 16px;
+            resize: none;
+            margin-bottom: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .modal-textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .modal-submit { width: 100%; }
+
+        /* ===== BADGES ===== */
+        .badges-section { margin-top: 20px; }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 12px 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .badge-item.earned {
+            opacity: 1;
+            border-color: var(--gold);
+            background: var(--gold-dim);
+        }
+
+        .badge-icon { font-size: 28px; margin-bottom: 4px; }
+        .badge-name { font-size: 10px; color: var(--text-muted); }
+        .badge-item.earned .badge-name { color: var(--gold); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .screens-container { padding: 75px 14px 115px; }
+            .screen { gap: 20px; }
+            .title-hero { font-size: 34px; }
+            .title-section { font-size: 26px; }
+            .btn { padding: 14px 24px; font-size: 16px; }
+            
+            .cabinet-content { padding: 0 14px 16px; }
+            .cabinet-nav-item { min-width: 50px; padding: 6px 8px; }
+            .cabinet-nav-item .nav-icon { font-size: 20px; }
+            .cabinet-nav-item span { font-size: 9px; }
+            
+            .dashboard-stat-card { padding: 14px; }
+            .dashboard-stat-value { font-size: 30px; }
+            
+            .roadmap-dot { width: 40px; height: 40px; font-size: 16px; }
+            .roadmap-line { left: 20px; }
+            
+            .badges-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+            .badge-item { padding: 10px 6px; }
+            .badge-icon { font-size: 24px; }
+        }
+
+        @media (max-width: 360px) {
+            .title-hero { font-size: 30px; }
+            .cabinet-title { font-size: 24px; }
+            .week-number { font-size: 40px; }
+        }
+
+        /* Hide elements */
+        .hide { display: none !important; }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-effects">
+        <div class="bg-gradient"></div>
+        <div class="sparkles"></div>
+    </div>
+
+    <!-- ========================================
+         ONBOARDING APP
+         ======================================== -->
+    <div id="onboardingApp" class="app">
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-info">
+                <button class="progress-back" id="backBtn" disabled>← Назад</button>
+                <span class="progress-step">Шаг <span class="current" id="currentStep">0</span> из 7</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Screens -->
+        <div class="screens-container">
+            <!-- Screen 0: Welcome -->
+            <div class="screen active" data-screen="0">
+                <h1 class="title-hero">
+                    Почему <span class="highlight-red">91%</span> людей провалят цели в <span class="highlight-gold">2026</span>
+                </h1>
+                <p class="subtitle">— и как ты можешь быть в <span class="accent">9% победителей</span></p>
+                <div class="intro-checklist">
+                    <div class="intro-item">
+                        <span class="check-icon">✓</span>
+                        <span>Поймёшь главные ошибки 2025 года</span>
+                    </div>
+                    <div class="intro-item">
+                        <span class="check-icon">✓</span>
+                        <span>Поставишь 1-3 цели на 12 недель</span>
+                    </div>
+                    <div class="intro-item">
+                        <span class="check-icon">✓</span>
+                        <span>Получишь личный кабинет для трекинга</span>
+                    </div>
+                </div>
+                <div class="article">
+                    <h3 class="article-title">Почему годовые цели не работают?</h3>
+                    <p>Исследования показывают: <strong>12 месяцев — слишком много</strong>. Мозг не чувствует срочности.</p>
+                    <div class="article-highlight">
+                        <strong>1 год = 12 недель. 1 месяц = 1 неделя. 1 неделя = 1 день.</strong>
+                    </div>
+                    <p>Три принципа системы:</p>
+                    <ul class="principles-list">
+                        <li><strong>Ответственность</strong> — это твой выбор</li>
+                        <li><strong>Приверженность</strong> — делаешь, даже когда не хочется</li>
+                        <li><strong>Величие в моменте</strong> — сегодняшние решения определяют результат</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Screen 1: Wheel -->
+            <div class="screen" data-screen="1">
+                <h1 class="title-section">🎡 Колесо жизни 2025</h1>
+                <p class="subtitle">Оцени удовлетворённость каждой сферой. <span class="accent">1</span> = провал, <span class="accent">10</span> = идеально</p>
+                <div class="wheel-section">
+                    <div class="wheel-canvas-container">
+                        <canvas id="wheelCanvas"></canvas>
+                    </div>
+                    <div class="sliders-container" id="slidersContainer"></div>
+                    <div class="wheel-insight" id="wheelInsight">Двигай слайдеры для визуализации.</div>
+                </div>
+            </div>
+
+            <!-- Screen 2: Lessons -->
+            <div class="screen" data-screen="2">
+                <h1 class="title-section">📝 Уроки 2025</h1>
+                <p class="subtitle">Закрой год осознанно.</p>
+                <div class="form-group">
+                    <label class="form-label"><span class="emoji">🏆</span> Главная победа?</label>
+                    <textarea id="mainWin" rows="2" placeholder="Что удалось в этом году?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span class="emoji">🎯</span> Что НЕ достиг?</label>
+                    <textarea id="unachievedGoal" rows="2" placeholder="Что не получилось и почему?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span class="emoji">🚫</span> Что оставить?</label>
+                    <textarea id="habitToLeave" rows="2" placeholder="Привычка, которая мешала"></textarea>
+                </div>
+            </div>
+
+            <!-- Screen 3: Vision -->
+            <div class="screen" data-screen="3">
+                <h1 class="title-section">🔮 Видение 2026</h1>
+                <div class="vision-card">
+                    <span class="vision-emoji">✨</span>
+                    <p>Представь: <strong>31 декабря 2026</strong>.<br>Что сделает тебя <strong>гордым</strong>?</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span class="emoji">🎯</span> К концу 2026 я хочу...</label>
+                    <textarea id="yearlyGoal" rows="3" placeholder="Главная цель года"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span class="emoji">❤️</span> Почему это важно?</label>
+                    <textarea id="whyImportant" rows="2" placeholder="Глубинная причина"></textarea>
+                </div>
+            </div>
+
+            <!-- Screen 4: Goals -->
+            <div class="screen" data-screen="4">
+                <h1 class="title-section">🎯 Цели Q1 2026</h1>
+                <div class="quote-block">
+                    <strong>12 недель = 1 год</strong>
+                    <p>Лучше 1 цель и 100% фокус, чем 5 целей и 20% на каждую.</p>
+                </div>
+                <p class="subtitle">Выбери <span class="accent-red">1-3 направления</span>:</p>
+                <div class="goals-grid" id="goalsGrid">
+                    <div class="goal-card-wrapper" data-category="finance">
+                        <div class="goal-card-header">
+                            <span class="emoji">💰</span>
+                            <div class="goal-card-content">
+                                <div class="goal-card-name">Финансы</div>
+                                <div class="goal-card-hint">Заработать, закрыть долг</div>
+                            </div>
+                            <div class="goal-card-toggle"><span class="toggle-icon">+</span></div>
+                        </div>
+                        <div class="goal-card-expand">
+                            <input type="text" class="goal-input" data-category="finance" placeholder="Например: Заработать 100 000 ₽">
+                            <div class="smart-tags">
+                                <span class="smart-tag" data-check="specific">Конкретная?</span>
+                                <span class="smart-tag" data-check="measurable">Измеримая?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal-card-wrapper" data-category="health">
+                        <div class="goal-card-header">
+                            <span class="emoji">💪</span>
+                            <div class="goal-card-content">
+                                <div class="goal-card-name">Здоровье</div>
+                                <div class="goal-card-hint">Вес, тренировки, сон</div>
+                            </div>
+                            <div class="goal-card-toggle"><span class="toggle-icon">+</span></div>
+                        </div>
+                        <div class="goal-card-expand">
+                            <input type="text" class="goal-input" data-category="health" placeholder="Например: Сбросить 5 кг">
+                            <div class="smart-tags">
+                                <span class="smart-tag" data-check="specific">Конкретная?</span>
+                                <span class="smart-tag" data-check="measurable">Измеримая?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal-card-wrapper" data-category="business">
+                        <div class="goal-card-header">
+                            <span class="emoji">🚀</span>
+                            <div class="goal-card-content">
+                                <div class="goal-card-name">Бизнес / Карьера</div>
+                                <div class="goal-card-hint">Проект, подписчики</div>
+                            </div>
+                            <div class="goal-card-toggle"><span class="toggle-icon">+</span></div>
+                        </div>
+                        <div class="goal-card-expand">
+                            <input type="text" class="goal-input" data-category="business" placeholder="Например: Набрать 1000 подписчиков">
+                            <div class="smart-tags">
+                                <span class="smart-tag" data-check="specific">Конкретная?</span>
+                                <span class="smart-tag" data-check="measurable">Измеримая?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal-card-wrapper" data-category="learning">
+                        <div class="goal-card-header">
+                            <span class="emoji">📚</span>
+                            <div class="goal-card-content">
+                                <div class="goal-card-name">Обучение</div>
+                                <div class="goal-card-hint">Курсы, книги, навыки</div>
+                            </div>
+                            <div class="goal-card-toggle"><span class="toggle-icon">+</span></div>
+                        </div>
+                        <div class="goal-card-expand">
+                            <input type="text" class="goal-input" data-category="learning" placeholder="Например: Пройти курс по маркетингу">
+                            <div class="smart-tags">
+                                <span class="smart-tag" data-check="specific">Конкретная?</span>
+                                <span class="smart-tag" data-check="measurable">Измеримая?</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="goal-card-wrapper" data-category="custom">
+                        <div class="goal-card-header">
+                            <span class="emoji">✨</span>
+                            <div class="goal-card-content">
+                                <div class="goal-card-name">Своя цель</div>
+                                <div class="goal-card-hint">Отношения, хобби</div>
+                            </div>
+                            <div class="goal-card-toggle"><span class="toggle-icon">+</span></div>
+                        </div>
+                        <div class="goal-card-expand">
+                            <input type="text" class="goal-input" data-category="custom" placeholder="Твоя уникальная цель">
+                            <div class="smart-tags">
+                                <span class="smart-tag" data-check="specific">Конкретная?</span>
+                                <span class="smart-tag" data-check="measurable">Измеримая?</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="goal-counter">Выбрано: <span id="goalsCount">0</span>/3</div>
+            </div>
+
+            <!-- Screen 5: Tactics -->
+            <div class="screen" data-screen="5">
+                <h1 class="title-section">📋 Тактики</h1>
+                <div class="quote-block">
+                    <strong>Тактики = конкретные действия</strong>
+                    <p>✅ Публиковать 5 Reels в неделю<br>✅ Тренироваться 3 раза</p>
+                </div>
+                <div id="tacticsContainer"></div>
+            </div>
+
+            <!-- Screen 6: System -->
+            <div class="screen" data-screen="6">
+                <h1 class="title-section">📊 Система</h1>
+                <p class="subtitle">Каждую неделю: «Сколько тактик выполнил?»</p>
+                <div class="scorecard-demo">
+                    <h4 class="scorecard-title">📈 Scorecard</h4>
+                    <div class="scorecard-grid">
+                        <div class="score-item gold"><span class="percent">100%</span><span class="label">🏆 Идеально</span></div>
+                        <div class="score-item green"><span class="percent">80%</span><span class="label">✅ Хорошо</span></div>
+                        <div class="score-item yellow"><span class="percent">60%</span><span class="label">⚠️ Норма</span></div>
+                        <div class="score-item red"><span class="percent">&lt;60%</span><span class="label">🔴 Изменения</span></div>
+                    </div>
+                </div>
+                <div class="quote-block">
+                    <strong>Цель: держать выше 85%</strong>
+                    <p>Ты не должен быть идеальным. Ты должен быть последовательным.</p>
+                </div>
+                <p class="subtitle">День для <span class="accent">Weekly Review</span>:</p>
+                <div class="review-options" id="reviewOptions">
+                    <label class="review-option" data-day="monday">
+                        <input type="radio" name="reviewDay" value="monday">
+                        <span class="review-radio"></span>
+                        <span class="review-text">Понедельник (утро)</span>
+                    </label>
+                    <label class="review-option" data-day="friday">
+                        <input type="radio" name="reviewDay" value="friday">
+                        <span class="review-radio"></span>
+                        <span class="review-text">Пятница (вечер)</span>
+                    </label>
+                    <label class="review-option selected" data-day="sunday">
+                        <input type="radio" name="reviewDay" value="sunday" checked>
+                        <span class="review-radio"></span>
+                        <span class="review-text">Воскресенье (вечер)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Screen 7: Final -->
+            <div class="screen" data-screen="7">
+                <div class="final-header">
+                    <span class="final-emoji">🎉</span>
+                    <h2 class="final-title">План готов!</h2>
+                    <p class="final-subtitle">Твои цели на Q1 2026</p>
+                </div>
+                <div class="summary-section">
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <span class="summary-icon">🎯</span>
+                            <h3>Цели</h3>
+                        </div>
+                        <div class="summary-goals" id="summaryGoals"></div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-header">
+                            <span class="summary-icon">📋</span>
+                            <h3>Тактики</h3>
+                        </div>
+                        <div class="summary-tactics" id="summaryTactics"></div>
+                    </div>
+                </div>
+                <div class="final-stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-value" id="finalGoalsCount">0</span>
+                        <span class="stat-label">целей</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="finalTacticsCount">0</span>
+                        <span class="stat-label">тактик</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-value">12</span>
+                        <span class="stat-label">недель</span>
+                    </div>
+                </div>
+                <div class="motivation-block">
+                    <div class="quote-mark">"</div>
+                    <p class="motivation-text">
+                        Через 12 недель ты будешь рад, что начал сегодня.<br>
+                        <strong>Действуй. Каждый день.</strong>
+                    </p>
+                </div>
+                <div class="enter-cabinet-btn">
+                    <button class="btn btn-gold" id="enterCabinetBtn">
+                        🚀 Войти в личный кабинет
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav" id="onboardingNav">
+            <button class="btn btn-primary btn-pulse" id="nextBtn">🚀 Начать</button>
+        </div>
+    </div>
+
+    <!-- ========================================
+         PERSONAL CABINET
+         ======================================== -->
+    <div id="cabinetApp" class="app">
+        <div class="cabinet">
+            <!-- Header -->
+            <div class="cabinet-header">
+                <h1 class="cabinet-title">Мой Q1 2026</h1>
+                <div class="cabinet-week-badge">
+                    <span class="week-badge" id="cabinetWeekBadge">Неделя 1 из 12</span>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="cabinet-content">
+                <!-- Dashboard -->
+                <div class="cabinet-section active" data-section="dashboard">
+                    <div class="dashboard-hero">
+                        <div class="dashboard-week-progress">
+                            <div class="week-number" id="dashboardWeekNum">1</div>
+                            <div class="week-label">неделя из 12</div>
+                        </div>
+                        <div class="dashboard-progress-bar">
+                            <div class="dashboard-progress-fill" id="dashboardProgressFill" style="width: 8%"></div>
+                        </div>
+                        <div class="dashboard-progress-text" id="dashboardProgressText">До финиша: 11 недель</div>
+                    </div>
+
+                    <div class="streak-card" id="streakCard">
+                        <span class="streak-fire">🔥</span>
+                        <div class="streak-info">
+                            <div class="streak-count" id="streakCount">0 недель</div>
+                            <div class="streak-label">подряд заполняешь check-in</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-stats">
+                        <div class="dashboard-stat-card">
+                            <div class="dashboard-stat-value gold" id="avgScoreValue">—</div>
+                            <div class="dashboard-stat-label">Средний %</div>
+                        </div>
+                        <div class="dashboard-stat-card">
+                            <div class="dashboard-stat-value blue" id="checkinsDone">0</div>
+                            <div class="dashboard-stat-label">Check-in</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-goals">
+                        <h3 class="section-title">🎯 Твои цели</h3>
+                        <div id="dashboardGoalsList"></div>
+                    </div>
+
+                    <div class="dashboard-cta" id="dashboardCTA">
+                        <div class="dashboard-cta-emoji">📋</div>
+                        <div class="dashboard-cta-title">Время для Check-in!</div>
+                        <div class="dashboard-cta-text">Отметь выполненные тактики этой недели</div>
+                        <button class="btn btn-primary" id="goToCheckinBtn">Заполнить</button>
+                    </div>
+
+                    <div class="badges-section">
+                        <h3 class="section-title">🏅 Достижения</h3>
+                        <div class="badges-grid" id="badgesGrid"></div>
+                    </div>
+                </div>
+
+                <!-- Check-in -->
+                <div class="cabinet-section" data-section="checkin">
+                    <div class="checkin-header">
+                        <div class="checkin-week" id="checkinWeekTitle">Неделя 1</div>
+                        <div class="checkin-date" id="checkinDate"></div>
+                    </div>
+
+                    <div class="checkin-section">
+                        <h3 class="checkin-section-title">📋 Выполненные тактики</h3>
+                        <div class="checkin-tactics" id="checkinTactics"></div>
+                        <div class="checkin-score-result">
+                            <div class="checkin-score-value" id="checkinScoreValue">0%</div>
+                            <div class="checkin-score-label">результат недели</div>
+                        </div>
+                    </div>
+
+                    <div class="checkin-section">
+                        <h3 class="checkin-section-title">⚡ Энергия и настроение</h3>
+                        <div class="energy-slider-container">
+                            <div class="energy-emojis" id="energyEmojis">
+                                <span class="energy-emoji" data-value="1">😫</span>
+                                <span class="energy-emoji" data-value="2">😔</span>
+                                <span class="energy-emoji" data-value="3">😐</span>
+                                <span class="energy-emoji" data-value="4">🙂</span>
+                                <span class="energy-emoji" data-value="5">😊</span>
+                                <span class="energy-emoji" data-value="6">😄</span>
+                                <span class="energy-emoji" data-value="7">🤩</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkin-section">
+                        <h3 class="checkin-section-title">🏆 Победа недели</h3>
+                        <input type="text" class="win-input" id="weeklyWin" placeholder="Чем гордишься на этой неделе?">
+                    </div>
+
+                    <div class="checkin-section">
+                        <h3 class="checkin-section-title">💭 Что помешало?</h3>
+                        <textarea id="weeklyObstacle" rows="2" placeholder="Что мешало выполнить план?"></textarea>
+                    </div>
+
+                    <div class="checkin-section">
+                        <h3 class="checkin-section-title">🎯 Фокус на следующую неделю</h3>
+                        <textarea id="weeklyFocus" rows="2" placeholder="Что изменишь?"></textarea>
+                    </div>
+
+                    <div class="checkin-submit">
+                        <button class="btn btn-gold" id="submitCheckin">✓ Сохранить Check-in</button>
+                    </div>
+                </div>
+
+                <!-- Roadmap -->
+                <div class="cabinet-section" data-section="roadmap">
+                    <h2 class="section-title" style="margin-bottom: 20px;">🗺️ Твой путь</h2>
+                    <div class="roadmap-container">
+                        <div class="roadmap-line">
+                            <div class="roadmap-line-fill" id="roadmapLineFill" style="height: 0%"></div>
+                        </div>
+                        <div class="roadmap-weeks" id="roadmapWeeks"></div>
+                        <div class="roadmap-finish" id="roadmapFinish">
+                            <div class="roadmap-finish-icon">🏔️</div>
+                            <div class="roadmap-finish-text">Финиш Q1 2026</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Journal -->
+                <div class="cabinet-section" data-section="journal">
+                    <div class="journal-header">
+                        <h2 class="section-title">📝 Журнал</h2>
+                        <button class="journal-add-btn" id="addJournalBtn">+ Запись</button>
+                    </div>
+                    <div class="journal-filters" id="journalFilters">
+                        <button class="journal-filter active" data-filter="all">Все</button>
+                        <button class="journal-filter" data-filter="win">🏆 Победы</button>
+                        <button class="journal-filter" data-filter="lesson">📚 Уроки</button>
+                        <button class="journal-filter" data-filter="idea">💡 Идеи</button>
+                        <button class="journal-filter" data-filter="struggle">😤 Сложности</button>
+                    </div>
+                    <div class="journal-entries" id="journalEntries"></div>
+                </div>
+            </div>
+
+            <!-- Cabinet Nav -->
+            <nav class="cabinet-nav">
+                <button class="cabinet-nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Главная</span>
+                </button>
+                <button class="cabinet-nav-item" data-section="checkin" id="checkinNavBtn">
+                    <span class="nav-icon">📋</span>
+                    <span>Check-in</span>
+                </button>
+                <button class="cabinet-nav-item" data-section="roadmap">
+                    <span class="nav-icon">🗺️</span>
+                    <span>Путь</span>
+                </button>
+                <button class="cabinet-nav-item" data-section="journal">
+                    <span class="nav-icon">📝</span>
+                    <span>Журнал</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Journal Modal -->
+        <div class="modal-overlay" id="journalModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Новая запись</h3>
+                    <button class="modal-close" id="closeModal">×</button>
+                </div>
+                <div class="modal-types" id="modalTypes">
+                    <div class="modal-type selected" data-type="win">
+                        <div class="modal-type-icon">🏆</div>
+                        <div class="modal-type-label">Победа</div>
+                    </div>
+                    <div class="modal-type" data-type="lesson">
+                        <div class="modal-type-icon">📚</div>
+                        <div class="modal-type-label">Урок</div>
+                    </div>
+                    <div class="modal-type" data-type="idea">
+                        <div class="modal-type-icon">💡</div>
+                        <div class="modal-type-label">Идея</div>
+                    </div>
+                    <div class="modal-type" data-type="struggle">
+                        <div class="modal-type-icon">😤</div>
+                        <div class="modal-type-label">Сложность</div>
+                    </div>
+                </div>
+                <textarea class="modal-textarea" id="journalText" placeholder="Что хочешь записать?"></textarea>
+                <button class="btn btn-gold modal-submit" id="saveJournalEntry">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ============================================
+    // PREVENT ZOOM
+    // ============================================
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('gesturechange', e => e.preventDefault());
+    document.addEventListener('gestureend', e => e.preventDefault());
+    
+    // Prevent pinch zoom
+    document.addEventListener('touchmove', e => {
+        if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+    
+    // Prevent double-tap zoom
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', e => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
+
+    // Prevent ctrl+wheel zoom
+    document.addEventListener('wheel', e => {
+        if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
+
+    // ============================================
+    // STATE
+    // ============================================
+    const state = {
+        screen: 0,
+        total: 8,
+        wheel: { finance: 5, health: 5, relationships: 5, growth: 5, business: 5, creativity: 5, emotions: 5, contribution: 5 },
+        reflection: { mainWin: '', unachievedGoal: '', habitToLeave: '' },
+        vision: { yearlyGoal: '', whyImportant: '' },
+        goals: [],
+        tactics: {},
+        reviewDay: 'sunday',
+        // Cabinet data
+        currentWeek: 1,
+        startDate: null,
+        checkins: {},
+        journal: [],
+        badges: []
+    };
+
+    const wheelConfig = [
+        { key: 'finance', label: 'Финансы', emoji: '💰', color: '#FFD700' },
+        { key: 'health', label: 'Здоровье', emoji: '💪', color: '#22C55E' },
+        { key: 'relationships', label: 'Отношения', emoji: '❤️', color: '#E63946' },
+        { key: 'growth', label: 'Рост', emoji: '🧠', color: '#8B5CF6' },
+        { key: 'business', label: 'Бизнес', emoji: '🎯', color: '#4361EE' },
+        { key: 'creativity', label: 'Творчество', emoji: '🎨', color: '#EC4899' },
+        { key: 'emotions', label: 'Эмоции', emoji: '🧘', color: '#14B8A6' },
+        { key: 'contribution', label: 'Вклад', emoji: '🌍', color: '#F59E0B' }
+    ];
+
+    const goalMeta = {
+        finance: { emoji: '💰', name: 'Финансы' },
+        health: { emoji: '💪', name: 'Здоровье' },
+        business: { emoji: '🚀', name: 'Бизнес' },
+        learning: { emoji: '📚', name: 'Обучение' },
+        custom: { emoji: '✨', name: 'Своя цель' }
+    };
+
+    const badgesConfig = [
+        { id: 'first_checkin', icon: '✅', name: 'Первый шаг', condition: (s) => Object.keys(s.checkins).length >= 1 },
+        { id: 'streak_3', icon: '🔥', name: '3 недели', condition: (s) => getStreak(s) >= 3 },
+        { id: 'streak_5', icon: '🔥', name: '5 недель', condition: (s) => getStreak(s) >= 5 },
+        { id: 'perfect_week', icon: '💯', name: '100%', condition: (s) => Object.values(s.checkins).some(c => c.score === 100) },
+        { id: 'halfway', icon: '🏔️', name: 'Половина', condition: (s) => s.currentWeek >= 6 },
+        { id: 'journal_5', icon: '📝', name: '5 записей', condition: (s) => s.journal.length >= 5 },
+        { id: 'finisher', icon: '🏆', name: 'Финишер', condition: (s) => s.currentWeek >= 12 && Object.keys(s.checkins).length >= 10 },
+        { id: 'consistent', icon: '⭐', name: 'Стабильный', condition: (s) => { const scores = Object.values(s.checkins).map(c => c.score); return scores.length >= 4 && scores.slice(-4).every(sc => sc >= 80); } }
+    ];
+
+    // ============================================
+    // HELPERS
+    // ============================================
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    function save() {
+        try { localStorage.setItem('planner2026v3', JSON.stringify(state)); } catch(e) {}
+    }
+
+    function load() {
+        try {
+            const d = localStorage.getItem('planner2026v3');
+            if (d) Object.assign(state, JSON.parse(d));
+        } catch(e) {}
+    }
+
+    function getStreak(s) {
+        let streak = 0;
+        for (let w = s.currentWeek; w >= 1; w--) {
+            if (s.checkins[w]) streak++;
+            else break;
+        }
+        return streak;
+    }
+
+    function calculateCurrentWeek() {
+        if (!state.startDate) return 1;
+        const start = new Date(state.startDate);
+        const now = new Date();
+        const diff = Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000)) + 1;
+        return Math.min(Math.max(diff, 1), 12);
+    }
+
+    function formatDate(date) {
+        return new Date(date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+    }
+
+    // ============================================
+    // ONBOARDING
+    // ============================================
+    const screens = $$('.screen');
+    const progressFill = $('#progressFill');
+    const stepEl = $('#currentStep');
+    const nextBtn = $('#nextBtn');
+    const backBtn = $('#backBtn');
+
+    function goTo(idx) {
+        if (idx < 0 || idx >= state.total) return;
+        screens.forEach(s => s.classList.remove('active'));
+        screens[idx].classList.add('active');
+        state.screen = idx;
+        updateProgress();
+        updateNav();
+        save();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress() {
+        const pct = (state.screen / (state.total - 1)) * 100;
+        progressFill.style.width = pct + '%';
+        stepEl.textContent = state.screen;
+    }
+
+    function updateNav() {
+        backBtn.disabled = state.screen === 0;
+        const texts = ['🚀 Начать', 'Далее →', 'Далее →', 'Далее →', 'Далее →', 'Далее →', '🎉 Завершить', ''];
+        nextBtn.textContent = texts[state.screen];
+        nextBtn.classList.toggle('btn-pulse', state.screen === 0);
+        $('#onboardingNav').classList.toggle('hide', state.screen === 7);
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (state.screen === 4) generateTactics();
+        if (state.screen === 6) {
+            updateFinalSummary();
+            if (!state.startDate) state.startDate = new Date().toISOString();
+            save();
+        }
+        goTo(state.screen + 1);
+    });
+
+    backBtn.addEventListener('click', () => goTo(state.screen - 1));
+
+    // Enter cabinet
+    $('#enterCabinetBtn').addEventListener('click', () => {
+        document.body.classList.add('cabinet-mode');
+        state.currentWeek = calculateCurrentWeek();
+        save();
+        initCabinet();
+    });
+
+    // ============================================
+    // WHEEL
+    // ============================================
+    function initSliders() {
+        const container = $('#slidersContainer');
+        container.innerHTML = '';
+        wheelConfig.forEach(area => {
+            container.innerHTML += `
+                <div class="slider-row" data-area="${area.key}">
+                    <div class="slider-header">
+                        <span class="slider-label"><span class="emoji">${area.emoji}</span>${area.label}</span>
+                        <span class="slider-value">${state.wheel[area.key]}</span>
+                    </div>
+                    <div class="slider-track">
+                        <div class="slider-fill" style="width:${(state.wheel[area.key]-1)/9*100}%"></div>
+                        <div class="slider-thumb" style="left:${(state.wheel[area.key]-1)/9*100}%"></div>
+                    </div>
+                </div>
+            `;
+        });
+
+        $$('.slider-row').forEach(row => {
+            const track = row.querySelector('.slider-track');
+            const thumb = row.querySelector('.slider-thumb');
+            const fill = row.querySelector('.slider-fill');
+            const valEl = row.querySelector('.slider-value');
+            const key = row.dataset.area;
+            let dragging = false;
+
+            function update(clientX) {
+                const rect = track.getBoundingClientRect();
+                let pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+                const val = Math.round(pct * 9) + 1;
+                state.wheel[key] = val;
+                const displayPct = ((val - 1) / 9) * 100;
+                fill.style.width = displayPct + '%';
+                thumb.style.left = displayPct + '%';
+                valEl.textContent = val;
+                drawWheel();
+                updateInsight();
+            }
+
+            track.addEventListener('mousedown', e => { dragging = true; update(e.clientX); });
+            track.addEventListener('touchstart', e => { dragging = true; update(e.touches[0].clientX); }, { passive: true });
+            document.addEventListener('mousemove', e => { if (dragging) update(e.clientX); });
+            document.addEventListener('touchmove', e => { if (dragging) update(e.touches[0].clientX); }, { passive: true });
+            document.addEventListener('mouseup', () => dragging = false);
+            document.addEventListener('touchend', () => dragging = false);
+        });
+    }
+
+    function drawWheel() {
+        const canvas = $('#wheelCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        if (rect.width <= 0) return;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        const cx = rect.width / 2, cy = rect.height / 2;
+        const maxR = Math.min(cx, cy) - 25;
+        if (maxR <= 0) return;
+        ctx.clearRect(0, 0, rect.width, rect.height);
+
+        // Grid
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        for (let i = 1; i <= 10; i++) {
+            ctx.beginPath();
+            ctx.arc(cx, cy, (maxR / 10) * i, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        // Sectors
+        const step = (Math.PI * 2) / wheelConfig.length;
+        wheelConfig.forEach((area, i) => {
+            const val = state.wheel[area.key];
+            const r = Math.max(0, (maxR / 10) * val);
+            const start = step * i - Math.PI / 2;
+            const end = start + step;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, start, end);
+            ctx.closePath();
+            ctx.fillStyle = area.color + '35';
+            ctx.fill();
+            ctx.strokeStyle = area.color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + Math.cos(start) * maxR, cy + Math.sin(start) * maxR);
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            const lAngle = start + step / 2;
+            ctx.font = '20px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(area.emoji, cx + Math.cos(lAngle) * maxR * 0.65, cy + Math.sin(lAngle) * maxR * 0.65);
+        });
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#FFD700';
+        ctx.fill();
+    }
+
+    function updateInsight() {
+        const vals = Object.values(state.wheel);
+        const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+        const weak = wheelConfig.filter(a => state.wheel[a.key] <= 4).map(a => a.label);
+        let text = weak.length ? `Зоны роста: <strong>${weak.join(', ')}</strong>. ` : '✅ Хороший баланс! ';
+        text += `Средний: <strong>${avg.toFixed(1)}/10</strong>`;
+        $('#wheelInsight').innerHTML = text;
+    }
+
+    // ============================================
+    // FORMS
+    // ============================================
+    $('#mainWin')?.addEventListener('input', e => { state.reflection.mainWin = e.target.value; save(); });
+    $('#unachievedGoal')?.addEventListener('input', e => { state.reflection.unachievedGoal = e.target.value; save(); });
+    $('#habitToLeave')?.addEventListener('input', e => { state.reflection.habitToLeave = e.target.value; save(); });
+    $('#yearlyGoal')?.addEventListener('input', e => { state.vision.yearlyGoal = e.target.value; save(); });
+    $('#whyImportant')?.addEventListener('input', e => { state.vision.whyImportant = e.target.value; save(); });
+
+    // ============================================
+    // GOALS
+    // ============================================
+    $$('.goal-card-wrapper').forEach(wrapper => {
+        const header = wrapper.querySelector('.goal-card-header');
+        const cat = wrapper.dataset.category;
+        const input = wrapper.querySelector('.goal-input');
+
+        header.addEventListener('click', () => {
+            if (wrapper.classList.contains('selected')) {
+                wrapper.classList.remove('selected');
+                state.goals = state.goals.filter(g => g.category !== cat);
+            } else {
+                if (state.goals.length >= 3) {
+                    const first = state.goals[0];
+                    $(`.goal-card-wrapper[data-category="${first.category}"]`).classList.remove('selected');
+                    state.goals.shift();
+                }
+                wrapper.classList.add('selected');
+                state.goals.push({ category: cat, goal: input.value || '' });
+                setTimeout(() => input.focus(), 100);
+            }
+            $('#goalsCount').textContent = state.goals.length;
+            save();
+        });
+
+        input.addEventListener('input', e => {
+            const goal = state.goals.find(g => g.category === cat);
+            if (goal) { goal.goal = e.target.value; save(); }
+            updateSmart(wrapper, e.target.value);
+        });
+        input.addEventListener('click', e => e.stopPropagation());
+    });
+
+    function updateSmart(wrapper, text) {
+        wrapper.querySelectorAll('.smart-tag').forEach(tag => {
+            const check = tag.dataset.check;
+            if (check === 'specific' && text.length > 10) tag.classList.add('valid');
+            else if (check === 'measurable' && /\d/.test(text)) tag.classList.add('valid');
+            else tag.classList.remove('valid');
+        });
+    }
+
+    // ============================================
+    // TACTICS
+    // ============================================
+    function generateTactics() {
+        const container = $('#tacticsContainer');
+        container.innerHTML = '';
+        if (!state.goals.length) {
+            container.innerHTML = '<p class="subtitle">Сначала выбери цели.</p>';
+            return;
+        }
+        state.goals.forEach(goalObj => {
+            const meta = goalMeta[goalObj.category] || { emoji: '🎯', name: 'Цель' };
+            if (!state.tactics[goalObj.category]) {
+                state.tactics[goalObj.category] = [{ action: '', frequency: 'weekly' }, { action: '', frequency: 'weekly' }];
+            }
+            const block = document.createElement('div');
+            block.className = 'tactic-block';
+            block.innerHTML = `
+                <div class="tactic-header">
+                    <span class="emoji">${meta.emoji}</span>
+                    <h4>${goalObj.goal || meta.name}</h4>
+                </div>
+                <div class="tactics-list" data-goal="${goalObj.category}">
+                    ${state.tactics[goalObj.category].map((t, i) => `
+                        <div class="tactic-row">
+                            <input type="text" placeholder="Действие ${i+1}" value="${t.action}" data-index="${i}">
+                            <select class="tactic-select" data-index="${i}">
+                                <option value="daily" ${t.frequency==='daily'?'selected':''}>Ежедневно</option>
+                                <option value="weekly" ${t.frequency==='weekly'?'selected':''}>В неделю</option>
+                                <option value="3x" ${t.frequency==='3x'?'selected':''}>3 раза</option>
+                            </select>
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="add-tactic-btn" data-goal="${goalObj.category}">+ Тактика</button>
+            `;
+            container.appendChild(block);
+        });
+
+        container.querySelectorAll('.tactics-list input').forEach(inp => {
+            inp.addEventListener('input', e => {
+                const goal = e.target.closest('.tactics-list').dataset.goal;
+                const idx = parseInt(e.target.dataset.index);
+                state.tactics[goal][idx].action = e.target.value;
+                save();
+            });
+        });
+
+        container.querySelectorAll('.tactics-list select').forEach(sel => {
+            sel.addEventListener('change', e => {
+                const goal = e.target.closest('.tactics-list').dataset.goal;
+                const idx = parseInt(e.target.dataset.index);
+                state.tactics[goal][idx].frequency = e.target.value;
+                save();
+            });
+        });
+
+        container.querySelectorAll('.add-tactic-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const goal = e.target.dataset.goal;
+                state.tactics[goal].push({ action: '', frequency: 'weekly' });
+                generateTactics();
+                save();
+            });
+        });
+    }
+
+    // ============================================
+    // REVIEW OPTIONS
+    // ============================================
+    $$('.review-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            $$('.review-option').forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+            opt.querySelector('input').checked = true;
+            state.reviewDay = opt.dataset.day;
+            save();
+        });
+    });
+
+    // ============================================
+    // FINAL SUMMARY
+    // ============================================
+    function updateFinalSummary() {
+        // Goals
+        const goalsContainer = $('#summaryGoals');
+        goalsContainer.innerHTML = state.goals.length ? state.goals.map(g => {
+            const m = goalMeta[g.category] || { emoji: '🎯' };
+            return `<div class="summary-goal-item"><span class="emoji">${m.emoji}</span><span class="text">${g.goal || m.name}</span></div>`;
+        }).join('') : '<div class="summary-empty">Цели не заданы</div>';
+
+        // Tactics
+        const tacticsContainer = $('#summaryTactics');
+        let tacticsHtml = '';
+        let tacticsCount = 0;
+        state.goals.forEach(g => {
+            const m = goalMeta[g.category] || { emoji: '🎯' };
+            const ts = (state.tactics[g.category] || []).filter(t => t.action.trim());
+            tacticsCount += ts.length;
+            if (ts.length) {
+                const freqLabels = { daily: 'ежедневно', weekly: 'в неделю', '3x': '3 раза' };
+                tacticsHtml += `<div class="summary-tactics-group">
+                    <div class="summary-tactics-title"><span>${m.emoji}</span>${g.goal || m.name}</div>
+                    ${ts.map(t => `<div class="summary-tactic-item"><span class="check">✓</span>${t.action}<span class="freq">${freqLabels[t.frequency]||t.frequency}</span></div>`).join('')}
+                </div>`;
+            }
+        });
+        tacticsContainer.innerHTML = tacticsHtml || '<div class="summary-empty">Тактики не заданы</div>';
+
+        $('#finalGoalsCount').textContent = state.goals.length;
+        $('#finalTacticsCount').textContent = tacticsCount;
+    }
+
+    // ============================================
+    // CABINET
+    // ============================================
+    function initCabinet() {
+        state.currentWeek = calculateCurrentWeek();
+        updateDashboard();
+        updateCheckinSection();
+        updateRoadmap();
+        updateJournal();
+        updateBadges();
+    }
+
+    // Cabinet navigation
+    $$('.cabinet-nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            $$('.cabinet-nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            $$('.cabinet-section').forEach(s => s.classList.remove('active'));
+            $(`.cabinet-section[data-section="${item.dataset.section}"]`).classList.add('active');
+        });
+    });
+
+    $('#goToCheckinBtn')?.addEventListener('click', () => {
+        $$('.cabinet-nav-item').forEach(i => i.classList.remove('active'));
+        $('[data-section="checkin"]').classList.add('active');
+        $$('.cabinet-section').forEach(s => s.classList.remove('active'));
+        $('.cabinet-section[data-section="checkin"]').classList.add('active');
+    });
+
+    // Dashboard
+    function updateDashboard() {
+        const week = state.currentWeek;
+        $('#cabinetWeekBadge').textContent = `Неделя ${week} из 12`;
+        $('#dashboardWeekNum').textContent = week;
+        $('#dashboardProgressFill').style.width = (week / 12 * 100) + '%';
+        $('#dashboardProgressText').textContent = `До финиша: ${12 - week} недель`;
+
+        // Streak
+        const streak = getStreak(state);
+        $('#streakCount').textContent = streak + ' недель';
+        $('#streakCard').style.display = streak > 0 ? 'flex' : 'none';
+
+        // Stats
+        const scores = Object.values(state.checkins).map(c => c.score);
+        const avg = scores.length ? Math.round(scores.reduce((a,b) => a+b, 0) / scores.length) : null;
+        $('#avgScoreValue').textContent = avg !== null ? avg + '%' : '—';
+        $('#checkinsDone').textContent = scores.length;
+
+        // Goals list
+        const goalsListEl = $('#dashboardGoalsList');
+        goalsListEl.innerHTML = state.goals.map(g => {
+            const m = goalMeta[g.category] || { emoji: '🎯' };
+            const weeksDone = Object.keys(state.checkins).length;
+            const pct = Math.round((weeksDone / 12) * 100);
+            return `<div class="dashboard-goal-card">
+                <div class="dashboard-goal-header">
+                    <span class="emoji">${m.emoji}</span>
+                    <span class="title">${g.goal || m.name}</span>
+                    <span class="percent">${pct}%</span>
+                </div>
+                <div class="dashboard-goal-progress"><div class="dashboard-goal-progress-fill" style="width:${pct}%"></div></div>
+            </div>`;
+        }).join('') || '<p class="summary-empty">Цели не заданы</p>';
+
+        // CTA
+        const hasCheckinThisWeek = !!state.checkins[week];
+        $('#dashboardCTA').style.display = hasCheckinThisWeek ? 'none' : 'block';
+        $('#checkinNavBtn').classList.toggle('pulse', !hasCheckinThisWeek);
+    }
+
+    // Check-in
+    let checkinState = { tactics: {}, energy: 4, win: '', obstacle: '', focus: '' };
+
+    function updateCheckinSection() {
+        const week = state.currentWeek;
+        $('#checkinWeekTitle').textContent = `Неделя ${week}`;
+        $('#checkinDate').textContent = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        // Load existing checkin if any
+        if (state.checkins[week]) {
+            checkinState = { ...state.checkins[week] };
+        } else {
+            checkinState = { tactics: {}, energy: 4, win: '', obstacle: '', focus: '' };
+        }
+
+        // Tactics
+        const tacticsEl = $('#checkinTactics');
+        let allTactics = [];
+        state.goals.forEach(g => {
+            (state.tactics[g.category] || []).forEach((t, i) => {
+                if (t.action.trim()) {
+                    allTactics.push({ goal: g.category, index: i, ...t });
+                }
+            });
+        });
+
+        tacticsEl.innerHTML = allTactics.map((t, idx) => {
+            const key = `${t.goal}_${t.index}`;
+            const status = checkinState.tactics[key] || 'no';
+            const freqLabels = { daily: 'ежедневно', weekly: 'в неделю', '3x': '3 раза' };
+            return `<div class="checkin-tactic-item">
+                <div class="checkin-checkbox ${status === 'yes' ? 'checked' : status === 'partial' ? 'partial' : ''}" data-key="${key}"></div>
+                <span class="checkin-tactic-text">${t.action}</span>
+                <span class="checkin-tactic-freq">${freqLabels[t.frequency]||''}</span>
+            </div>`;
+        }).join('') || '<p class="summary-empty">Тактики не заданы</p>';
+
+        // Bind checkbox clicks
+        $$('.checkin-checkbox').forEach(cb => {
+            cb.addEventListener('click', () => {
+                const key = cb.dataset.key;
+                const current = checkinState.tactics[key] || 'no';
+                const next = current === 'no' ? 'yes' : current === 'yes' ? 'partial' : 'no';
+                checkinState.tactics[key] = next;
+                cb.className = 'checkin-checkbox ' + (next === 'yes' ? 'checked' : next === 'partial' ? 'partial' : '');
+                updateCheckinScore();
+            });
+        });
+
+        // Energy
+        $('#energyEmojis').querySelectorAll('.energy-emoji').forEach(em => {
+            em.classList.toggle('active', parseInt(em.dataset.value) === checkinState.energy);
+            em.addEventListener('click', () => {
+                checkinState.energy = parseInt(em.dataset.value);
+                $('#energyEmojis').querySelectorAll('.energy-emoji').forEach(e => e.classList.remove('active'));
+                em.classList.add('active');
+            });
+        });
+
+        // Inputs
+        $('#weeklyWin').value = checkinState.win || '';
+        $('#weeklyObstacle').value = checkinState.obstacle || '';
+        $('#weeklyFocus').value = checkinState.focus || '';
+
+        updateCheckinScore();
+    }
+
+    function updateCheckinScore() {
+        const tactics = Object.values(checkinState.tactics);
+        const total = tactics.length || 1;
+        const done = tactics.filter(t => t === 'yes').length + tactics.filter(t => t === 'partial').length * 0.5;
+        const score = Math.round((done / total) * 100);
+        checkinState.score = score;
+
+        const scoreEl = $('#checkinScoreValue');
+        scoreEl.textContent = score + '%';
+        scoreEl.className = 'checkin-score-value ' + (score >= 90 ? 'great' : score >= 75 ? 'good' : score >= 50 ? 'ok' : 'low');
+    }
+
+    $('#weeklyWin')?.addEventListener('input', e => checkinState.win = e.target.value);
+    $('#weeklyObstacle')?.addEventListener('input', e => checkinState.obstacle = e.target.value);
+    $('#weeklyFocus')?.addEventListener('input', e => checkinState.focus = e.target.value);
+
+    $('#submitCheckin')?.addEventListener('click', () => {
+        state.checkins[state.currentWeek] = { ...checkinState, date: new Date().toISOString() };
+        save();
+        updateDashboard();
+        updateRoadmap();
+        updateBadges();
+        // Go to dashboard
+        $$('.cabinet-nav-item').forEach(i => i.classList.remove('active'));
+        $('.cabinet-nav-item[data-section="dashboard"]').classList.add('active');
+        $$('.cabinet-section').forEach(s => s.classList.remove('active'));
+        $('.cabinet-section[data-section="dashboard"]').classList.add('active');
+        alert('Check-in сохранён! 🎉');
+    });
+
+    // Roadmap
+    function updateRoadmap() {
+        const weeksEl = $('#roadmapWeeks');
+        let html = '';
+        for (let w = 1; w <= 12; w++) {
+            const checkin = state.checkins[w];
+            const status = w < state.currentWeek ? 'completed' : w === state.currentWeek ? 'current' : 'future';
+            html += `<div class="roadmap-week ${status}">
+                <div class="roadmap-dot">${w}</div>
+                <div class="roadmap-content">
+                    <div class="roadmap-week-header">
+                        <span class="roadmap-week-title">Неделя ${w}</span>
+                        ${checkin ? `<span class="roadmap-week-score">${checkin.score}%</span>` : ''}
+                    </div>
+                    ${checkin && checkin.win ? `<div class="roadmap-week-win">🏆 ${checkin.win}</div>` : ''}
+                </div>
+            </div>`;
+        }
+        weeksEl.innerHTML = html;
+
+        const fillPct = ((state.currentWeek - 1) / 12) * 100;
+        $('#roadmapLineFill').style.height = fillPct + '%';
+
+        $('#roadmapFinish').classList.toggle('reached', state.currentWeek > 12);
+    }
+
+    // Journal
+    let journalFilter = 'all';
+    let journalEntryType = 'win';
+
+    function updateJournal() {
+        const entriesEl = $('#journalEntries');
+        const filtered = journalFilter === 'all' ? state.journal : state.journal.filter(e => e.type === journalFilter);
+
+        if (!filtered.length) {
+            entriesEl.innerHTML = `<div class="journal-empty"><div class="journal-empty-icon">📝</div><p>Пока нет записей</p></div>`;
+            return;
+        }
+
+        entriesEl.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(entry => {
+            const typeIcons = { win: '🏆', lesson: '📚', idea: '💡', struggle: '😤' };
+            return `<div class="journal-entry">
+                <div class="journal-entry-header">
+                    <div class="journal-entry-type ${entry.type}">${typeIcons[entry.type]}</div>
+                    <div class="journal-entry-meta">
+                        <div class="journal-entry-date">${formatDate(entry.date)}</div>
+                    </div>
+                    <span class="journal-entry-week">Неделя ${entry.week}</span>
+                </div>
+                <div class="journal-entry-text">${entry.text}</div>
+            </div>`;
+        }).join('');
+    }
+
+    $$('.journal-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+            $$('.journal-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            journalFilter = btn.dataset.filter;
+            updateJournal();
+        });
+    });
+
+    $('#addJournalBtn')?.addEventListener('click', () => {
+        $('#journalModal').classList.add('active');
+        $('#journalText').value = '';
+    });
+
+    $('#closeModal')?.addEventListener('click', () => {
+        $('#journalModal').classList.remove('active');
+    });
+
+    $$('.modal-type').forEach(t => {
+        t.addEventListener('click', () => {
+            $$('.modal-type').forEach(m => m.classList.remove('selected'));
+            t.classList.add('selected');
+            journalEntryType = t.dataset.type;
+        });
+    });
+
+    $('#saveJournalEntry')?.addEventListener('click', () => {
+        const text = $('#journalText').value.trim();
+        if (!text) return;
+        state.journal.push({
+            type: journalEntryType,
+            text,
+            date: new Date().toISOString(),
+            week: state.currentWeek
+        });
+        save();
+        updateJournal();
+        updateBadges();
+        $('#journalModal').classList.remove('active');
+    });
+
+    // Badges
+    function updateBadges() {
+        state.badges = badgesConfig.filter(b => b.condition(state)).map(b => b.id);
+        const grid = $('#badgesGrid');
+        grid.innerHTML = badgesConfig.map(b => {
+            const earned = state.badges.includes(b.id);
+            return `<div class="badge-item ${earned ? 'earned' : ''}">
+                <div class="badge-icon">${b.icon}</div>
+                <div class="badge-name">${b.name}</div>
+            </div>`;
+        }).join('');
+        save();
+    }
+
+    // ============================================
+    // INIT
+    // ============================================
+    load();
+    initSliders();
+    setTimeout(() => { drawWheel(); updateInsight(); }, 100);
+    window.addEventListener('resize', drawWheel);
+    updateProgress();
+    updateNav();
+
+    // Restore state
+    if (state.startDate) {
+        state.currentWeek = calculateCurrentWeek();
+    }
+
+    // Restore goals UI
+    state.goals.forEach(g => {
+        const wrapper = $(`.goal-card-wrapper[data-category="${g.category}"]`);
+        if (wrapper) {
+            wrapper.classList.add('selected');
+            const input = wrapper.querySelector('.goal-input');
+            if (input) input.value = g.goal || '';
+        }
+    });
+    $('#goalsCount').textContent = state.goals.length;
+
+    // Restore review option
+    $$('.review-option').forEach(o => o.classList.remove('selected'));
+    const reviewOpt = $(`.review-option[data-day="${state.reviewDay}"]`);
+    if (reviewOpt) {
+        reviewOpt.classList.add('selected');
+        reviewOpt.querySelector('input').checked = true;
+    }
+
+    // Restore form fields
+    if ($('#mainWin')) $('#mainWin').value = state.reflection.mainWin || '';
+    if ($('#unachievedGoal')) $('#unachievedGoal').value = state.reflection.unachievedGoal || '';
+    if ($('#habitToLeave')) $('#habitToLeave').value = state.reflection.habitToLeave || '';
+    if ($('#yearlyGoal')) $('#yearlyGoal').value = state.vision.yearlyGoal || '';
+    if ($('#whyImportant')) $('#whyImportant').value = state.vision.whyImportant || '';
+
+    // If already started, go to cabinet
+    if (state.startDate && state.goals.length > 0) {
+        document.body.classList.add('cabinet-mode');
+        initCabinet();
+    }
+    </script>
+</body>
+</html>
